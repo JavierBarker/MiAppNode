@@ -1,1 +1,27 @@
-exports.addUser = async (req, res, next) => {};
+const User = require('../models/user.model');
+
+exports.getUsers = async (req, res, next) => {
+  const users = await User.findAll();
+
+  res.status(500).send(users);
+};
+
+exports.postAddUser = async (req, res, next) => {
+  const params = req.body;
+  const [findUser, createUser] = await User.findOrCreate({
+    where: {
+      email: params.email,
+    },
+    defaults: {
+      name: params.name,
+      email: params.email,
+      password: params.password,
+    },
+  });
+
+  if (createUser) {
+    res.status(200).send('Usuario creado.');
+  } else {
+    res.status(500).send('Este usuario ya existe.');
+  }
+};

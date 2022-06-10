@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 
 exports.getUsers = async (req, res, next) => {
@@ -8,6 +9,7 @@ exports.getUsers = async (req, res, next) => {
 
 exports.postAddUser = async (req, res, next) => {
   const params = req.body;
+  const password = await bcrypt.hash(params.password, 12);
   const [findUser, createUser] = await User.findOrCreate({
     where: {
       email: params.email,
@@ -15,7 +17,7 @@ exports.postAddUser = async (req, res, next) => {
     defaults: {
       name: params.name,
       email: params.email,
-      password: params.password,
+      password: password,
     },
   });
 
@@ -24,4 +26,12 @@ exports.postAddUser = async (req, res, next) => {
   } else {
     res.status(500).send('Este usuario ya existe.');
   }
+};
+
+exports.postLogin = async (req, res, next) => {
+  const params = req.body;
+  const user = await User.findOne({ where: { email: params.email } });
+  const matchPassword = await bcrypt.compare(params.password, user.password);
+
+  res.send(matchPassword);
 };

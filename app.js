@@ -1,7 +1,11 @@
 const express = require('express');
 const sequelize = require('./databases/database');
 
+const User = require('./models/user.model');
+const userRoutes = require('./routes/user.routes');
 const app = express();
+
+app.use(userRoutes);
 
 sequelize
   .sync()

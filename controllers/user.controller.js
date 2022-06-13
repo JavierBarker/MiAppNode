@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
 exports.getUsers = async (req, res, next) => {
@@ -33,5 +34,9 @@ exports.postLogin = async (req, res, next) => {
   const user = await User.findOne({ where: { email: params.email } });
   const matchPassword = await bcrypt.compare(params.password, user.password);
 
-  res.send(matchPassword);
+  if (matchPassword) {
+    res.status(200).send('Correct Password');
+  } else {
+    res.status(201).send('Incorrect Password');
+  }
 };

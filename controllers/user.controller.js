@@ -34,6 +34,9 @@ exports.postLogin = async (req, res, next) => {
   try {
     const params = req.body;
     const user = await User.findOne({ where: { email: params.email } });
+    if (user === null) {
+      return res.status(400).send('Not Finded User');
+    }
     const matchPassword = await bcrypt.compare(params.password, user.password);
 
     if (matchPassword) {

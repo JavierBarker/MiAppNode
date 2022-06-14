@@ -15,6 +15,7 @@ app.use('/api', userRoutes);
 app.use('/api/product', productRoutes);
 
 sequelize
+  //{force: true}
   .sync()
   .then((connect) => {
     //console.log(connect);

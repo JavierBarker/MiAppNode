@@ -1,3 +1,3 @@
 exports.getToken = async (req, res, next) => {
-  console.log(req.decode);
+  res.status(200).send(req.decode);
 };

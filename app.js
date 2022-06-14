@@ -3,8 +3,10 @@ const bodyParser = require('body-parser');
 const sequelize = require('./databases/database');
 
 const User = require('./models/user.model');
+const Product = require('./models/product.model');
 const userRoutes = require('./routes/user.routes');
 const productRoutes = require('./routes/product.routes');
+const { associations } = require('./databases/associations');
 const app = express();
 
 app.use(bodyParser.json());
@@ -12,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api', userRoutes);
 app.use('/api/product', productRoutes);
+
+associations;
 
 sequelize
   .sync()

@@ -11,6 +11,7 @@ const InvoiceProduct = require('./models/invoice_product.model');
 const userRoutes = require('./routes/user.routes');
 const productRoutes = require('./routes/product.routes');
 const cartRoutes = require('./routes/cart.routes');
+const invoiceRoutes = require('./routes/invoice.routes');
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', userRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/invoice', invoiceRoutes);
 
 sequelize
   //{force: true}

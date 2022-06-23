@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config.json');
 const User = require('../models/user.model');
+const Cart = require('../models/cart.model');
 
 exports.getUsers = async (req, res, next) => {
   const users = await User.findAll();
@@ -24,7 +25,18 @@ exports.postAddUser = async (req, res, next) => {
   });
 
   if (createUser) {
-    res.status(200).send('Usuario creado.');
+    const cart = await Cart.create({
+      user_id: findUser.id,
+    });
+    if (cart) {
+      res.status(200).send({
+        msg: 'Usuario creado.',
+        user: findUser,
+        cart: cart,
+      });
+    } else {
+      res.status(500).send('Ocurrio un error.');
+    }
   } else {
     res.status(500).send('Este usuario ya existe.');
   }

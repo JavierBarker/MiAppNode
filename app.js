@@ -6,6 +6,8 @@ const User = require('./models/user.model');
 const Product = require('./models/product.model');
 const Cart = require('./models/cart.model');
 const CartProduct = require('./models/cart_product.model');
+const Invoice = require('./models/invoice.model');
+const InvoiceProduct = require('./models/invoice_product.model');
 const userRoutes = require('./routes/user.routes');
 const productRoutes = require('./routes/product.routes');
 const cartRoutes = require('./routes/cart.routes');
@@ -20,6 +22,7 @@ app.use('/api/cart', cartRoutes);
 
 sequelize
   //{force: true}
+  // .sync({ force: true })
   .sync()
   .then((connect) => {
     //console.log(connect);

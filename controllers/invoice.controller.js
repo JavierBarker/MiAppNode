@@ -9,5 +9,17 @@ exports.postCrateInvoice = async (req, res, next) => {
     where: { cart_id: cart.id },
   });
 
-  console.log(cartProduct);
+  const invoice = await Invoice.create({ user_id: req.decode.user.id });
+  const addProducts = await cartProduct.map((product) => {
+    InvoiceProduct.create({
+      quantity: product.quantity,
+      invoice_id: invoice.id,
+      product_id: product.product_id,
+    });
+  });
+
+  await cartProduct.map((product) => {
+    product.destroy();
+  });
+  res.status(200).send(addProducts);
 };
